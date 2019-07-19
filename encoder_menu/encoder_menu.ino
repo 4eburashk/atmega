@@ -1,11 +1,14 @@
 // Меню управление енкодером, со звуком и выводом на LCD 1602.
 // author: 4eburashk csn.net4me.net
 // за основу работы с энкодором взят класс гайвера (если это он писал).
-// encoder (d7,d6,d5) + d4 as power + beeper (d3) + i2c led 1602 (a4,a5) 
+// pins:
+// encoder (d7,d6,d5) + d4 as power 
+// beeper (d3) 
+// i2c LCD 1602 (a4,a5) 
 //
 #include <LiquidCrystal_I2C.h>
 LiquidCrystal_I2C lcd(0x27,16,2);
-// пины энкодера:
+// пины энкодера китайцы жгут надписи не соответствуют сути:
 #define SW 5  // на плате key
 #define DT 6  // на плате s2
 #define CLK 7 // на плате s1
@@ -201,7 +204,7 @@ void setup() {
 	lcd.print(F("Test"));
 	lcd.setCursor(0, 1);
 	lcd.print(F("Monitor"));
-	pinMode(BP, OUTPUT );        // Настраиваем пищалку на выход
+	pinMode(BP, OUTPUT );      // Настраиваем пищалку на выход
   menuShow(MenuState);         // Отрисоваать меню в первый раз.
   pinMode(13, OUTPUT);
 }
