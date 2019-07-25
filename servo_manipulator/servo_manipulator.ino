@@ -56,10 +56,10 @@ void loop()
 	delay(1000);
 
 	downchange(20);
-  delay(1000); 
+        delay(1000); 
 	upchange(15);
 	delay(100); 
-  upchange(10);
+        upchange(10);
   
 	delay(5000);
 }
