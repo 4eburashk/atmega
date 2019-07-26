@@ -1,4 +1,6 @@
+// тестирование железа.
 // держатель камеры. 2 сервы.
+
 #include <Servo.h>
 
 Servo SRVup;
@@ -12,31 +14,31 @@ void setup()
   SRVdown.write(91);	// to start 90
 }
 
-void upchange(uint16_t DT){
-	for(uint16_t i = 0; i < 89; i++)
+void upchange(uint8_t DT){
+	for(uint8_t i = 0; i < 89; i++)
 	{
 		SRVup.write(i);
 		delay(DT);
 	}
-	for(uint16_t i = 89; i > 0; i--)
+	for(uint8_t i = 89; i > 0; i--)
 	{
 		SRVup.write(i);
 		delay(DT);
 	}
 }
 
-void downchange(uint16_t DT){
-	for(uint16_t j = 91; j > 0; j--)
+void downchange(uint8_t DT){
+	for(uint8_t j = 91; j > 0; j--)
 	{
 		SRVdown.write(j);
 		delay(DT);
 	}
-	for (uint16_t j = 0; j < 180; j++)
+	for (uint8_t j = 0; j < 180; j++)
 	{
 		SRVdown.write(j);
 		delay(DT);
 	}
-	for (uint16_t j = 180; j > 91; j--)
+	for (uint8_t j = 180; j > 91; j--)
 	{
 		SRVdown.write(j);
 		delay(DT);
@@ -50,16 +52,32 @@ void loop()
 	downchange(20);
 	delay(1000);
 
-	downchange(28);
-	delay(1500);
-	upchange(28);
+	downchange(15);
+	upchange(15);
 	delay(1000);
 
-	downchange(20);
-        delay(1000); 
-	upchange(15);
-	delay(100); 
-        upchange(10);
-  
-	delay(5000);
+	downchange(10);
+	delay(1000); 
+	upchange(10);
+	delay(100);
+	upchange(7);
+
+	// test position
+	SRVup.write(89);
+	delay(500);
+	SRVdown.write(0);
+	delay(500);
+	SRVup.write(0);
+	delay(500);
+	SRVdown.write(180);
+	delay(500);
+	SRVdown.write(91);
+	delay(500);
+	SRVup.write(89);
+	delay(500);
+	SRVup.write(0);
+	// fin
+	delay(2000);
 }
+
+// END
