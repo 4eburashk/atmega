@@ -1,6 +1,6 @@
 /*  
     Моя попытка сделать миниатюрную метеостанцию с дисплеем.
-    Раз в диджиспарк пока не влезло, то хотябы на нано сделать...
+    Но в диджиспарк по памяти не влезло. Пришлось на нано сделать...
     А раз на нано, то почему бы и не размахнуться.
     Author: 4tburashk http://csn.net4me.net
 
@@ -21,18 +21,13 @@
 #include <Arduino.h>
 #include <U8x8lib.h>
 //
-#define BME_SCK 13
-#define BME_MISO 12
-#define BME_MOSI 11
-#define BME_CS 10
-//
 Adafruit_BME280 bme; // I2C
 // OLED
 U8X8_SSD1306_128X32_UNIVISION_HW_I2C u8x8(SCL, SDA, U8X8_PIN_NONE);
 
 uint8_t c, r, e, led;
 
-void setup() {
+void setup(){
     u8x8.begin();
     pinMode(led, OUTPUT); // используется при алерте влажности.
     digitalWrite(led, 1); // off в этой нано оказалось наизнанку.
@@ -42,17 +37,17 @@ void setup() {
         u8x8.print(".");
         while (1);
     }
+    myClear(1);
 }
 
-void loop() {
-    if( bme.readHumidity() < 34 ) printHumAlert(bme.readHumidity()); // алерт низкой влажности.
+void loop(){
     printValues(15000); // показать основные данные.
     printPrognoz(7000); // барометр с "прогнозом".
+    if( bme.readHumidity() < 34 ) printHumAlert(bme.readHumidity()); // алерт низкой влажности.
 }
 
 void myClear(uint8_t x){
   // красивости. Очистка экрана. Наз уж памяти хватает.
-  // x:
   // 0 - only clean
   // 1 - full show
   // 2 - minimal
@@ -97,6 +92,7 @@ void printHumAlert(float vl){
 
 void printPrognoz(uint16_t pt){
   // телепаем по давлению погоду. Данные взяты со старого "аналогового" барометра.
+  // насколько это будет совпадать с реальностью - не имею понятия. Надо смотреть.
   uint16_t a = (int)(bme.readPressure()/133.3);
   //u8x8.setFont(u8x8_font_chroma48medium8_r);
   u8x8.setFont(u8x8_font_amstrad_cpc_extended_f);
@@ -111,14 +107,14 @@ void printPrognoz(uint16_t pt){
     printOform(a);
     u8x8.drawString(5, 3, "Vet-Dozhd");
     u8x8.setFont(u8x8_font_open_iconic_weather_4x4);
-    u8x8.drawGlyph(0, 0, '@'+0);
+    u8x8.drawGlyph(0, 0, '@');
       break;
     case 716 ... 725:
       // ветеръ
     printOform(a);
     u8x8.drawString(5, 3, "Veter");
     u8x8.setFont(u8x8_font_open_iconic_weather_4x4);
-    u8x8.drawGlyph(0, 0, '@'+0);
+    u8x8.drawGlyph(0, 0, '@');
       break;
     case 726 ... 735:
       // дождь
@@ -172,7 +168,7 @@ void printOform(uint16_t b){
   u8x8.drawString(10, 2, "mmH");
 }
 
-void printValues(uint16_t pt) {
+void printValues(uint16_t pt){
     //u8x8.clear();
     e = (int)u8x8.getCols();
     u8x8.setFont(u8x8_font_chroma48medium8_r);
